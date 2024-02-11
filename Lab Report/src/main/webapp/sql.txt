@@ -1,0 +1,13 @@
+create database lab;
+use lab;
+create table patient (pid integer NOT NULL AUTO_INCREMENT,name varchar(25) NOT NULL,age varchar(3) NOT NULL,gender varchar(20) NOT NULL,refdoc varchar(20) ,COMMENT varchar(30),PRIMARY KEY (pid));		
+create table report (prid integer,rpid integer NOT NULL AUTO_INCREMENT,comments varchar(50),rdate date,dtime datetime, amount int,spec varchar(20) PRIMARY KEY (rpid));
+create table test(tid integer NOT NULL AUTO_INCREMENT ,typename varchar(20)  ,gpname varchar(20),testname varchar(20),PRIMARY KEY (tid));
+create table result (rpid integer NOT NULL,testid integer NOT NULL,testresult varchar(30),cmt varchar(30));
+ALTER TABLE test ADD UNIQUE (typename,gpname,testname);
+ alter table report drop column testid,testresult;
+ alter table report add column dtime DATETIME;
+  alter table test modify testname varchar(20) NOT NULL;
+  
+ CREATE TABLE user ( uid int(5) NOT NULL AUTO_INCREMENT , uname varchar(25) NOT NULL, pwd varchar(30) NOT NULL )
+ insert into user (uname,pwd) values ( "root","12345");
