@@ -14,41 +14,7 @@
 <head>
 
 <script>
-function searchTable(p) {
-    var input, filter, found, tg,tg1,tg3 i, j;
-    
-   		input = document.getElementById("searchInput"+p);    
-  		table = document.getElementById("searchInputtab");
-	filter = input.value.toUpperCase(); 
-	tg = table.getElementsById('0');
-	tg1 = table.getElementsById(0).getElementsByTagName('section').getElementsById(1).getElementsByTagName('h5');
-	tg2 = table.getElementsById(0).getElementsByTagName('section').getElementsById(1)..getElementsById(2)getElementsByTagName('h5');
-	if(p=='0'){
-		for (i = 0; i < tg.length; i++) {
-	          if (tg[i].getElementsByTagName('h4').innerHTML.toUpperCase().indexOf(filter) > -1) {
-	                found = true;
-	              //  trid = tr.id;
-	            }
-	        }
-	        if (found) {
-	            tg[i].style.display="block";
-	         //   document.getElementById("trid").setAttribute("hidden", "hidden");
-	            found = false;
-	        } else {
-	            tg[i].style.display="none";
-	        }
-	    }
-	}
-	if(p=='1'){
-	    tg1 = table.getElementsByTagName(p).;
-	    
-		}
-	if(p=='2'){
-	    tg = table.getElementsById(0).getElementsByTagName('section').getElementsById(0).getElementsByTagName('h5');
-		}
-   // trid="";
-    
-}
+
 </script>
 <style>
 
@@ -105,7 +71,7 @@ try{
 %>  
 
 
-<form name="my-form" onsubmit="return validform()" action="editNewResult.jsp" method="">
+<form name="my-form" onsubmit="return validform()" action="editNewResult.jsp" method="post">
 <input type="hidden" name="rid" value="<%=rrid%>">
 <div id="Tokyo" class="w3-container w3-border city" >
 <section>
@@ -123,17 +89,17 @@ try{
  </table>
  </div> 
 
-<div class="tbl-content" style="height:48px">
+<div class="tbl-content" style="height:auto">
     <table  cellpadding="0" cellspacing="0" border="0" >    
    
   <tr >
        
-    <td colspan="2"> <input type="text" name="pid" value="<%=rs5.getString(1)%>"> </td>    
+    <td colspan="2"> <input type="text" name="pid" value="<%=rs5.getString(1)%>" required> </td>    
     <td colspan="2"> <%=rs5.getString(2) %>  </td>      
     <td colspan="2"><%=rs5.getString(3) %> / <%=rs5.getString(4) %> </td>   
-    <td colspan="2"> <%=rs5.getString(5) %> </td> 
-    <td colspan="2"><input type="text" name="spec" value="<%=rs.getString(7) %>"> </td>
-    <td colspan="2"><input type="date" name="rdt" value="<%=rs.getString(4) %>" id = "rdt" placeholder="dd-mm-yyyy" min="2024-01-01" max="2030-12-31" > </td>
+    <td colspan="2"> <%=rs5.getString(6) %> </td> 
+    <td colspan="2"><input type="text" name="spec" value="<%=rs.getString(7) %>" required> </td>
+    <td colspan="2"><input type="date" name="rdt" value="<%=rs.getString(4) %>" id = "rdt" placeholder="dd-mm-yyyy" min="2024-01-01" max="2030-12-31" required> </td>
     <td colspan="2"><input type="text" name="amt" value="<%=rs.getString(6) %>" > </td>
  
       
@@ -145,15 +111,15 @@ try{
 
 
 <br>
-
+<!--  
 <table>
-<div>
+
 <label>Type :</label> <input id='searchInput0' onkeyup='searchTable(0)' type='text'>
 <label>group : </label> <input id='searchInput1' onkeyup='searchTable(1)' type='text'>
 <label>Test :</label> <input id='searchInput2' onkeyup='searchTable(2)' type='text'>
 <hr>
-</div>
-</table>
+
+</table>-->
 <table id='searchInputtab'>
 <% 
 while (rs1.next())

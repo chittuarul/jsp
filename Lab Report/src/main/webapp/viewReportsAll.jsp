@@ -74,10 +74,12 @@ function searchTable(p) {
         <td>Patient id</td>
          <td>Patient Name</td>
           <td>Age</td>
-          <td>Gender</td>      
+          <td>Gender</td>   
+           <td>Phone</td>    
           <td>Referance Doctor</td>       
           <td>Comment</td>
           <td>Report</td>
+         
         </tr>
       
     </table>
@@ -91,12 +93,14 @@ function searchTable(p) {
       <%
       try{
     	  Connection con=ConnectionProvider.getCon();
-    		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("select * from patient order by 1 desc");
+     		Statement st=con.createStatement();
+    		Statement st1=con.createStatement();
+    		ResultSet rs=st.executeQuery("select * from patient  where pdelete = false order by 1 desc");
+    		ResultSet rs1=null;
     		while(rs.next())
     		{
-      
-      
+    			rs1=st1.executeQuery("select max(rpid) from report where prid= '"+rs.getString(1)+"' and deleted = false ");
+    			rs1.next();	        
       %>
         <tr id=<%=rs.getString(1)%>>
           <td><%=rs.getString(1) %></td>
@@ -104,9 +108,18 @@ function searchTable(p) {
           <td><%=rs.getString(3) %></td>
           <td><%=rs.getString(4) %></td>
           <td><%=rs.getString(5) %></td>
-          <td><%=rs.getString(6) %></td>     
-          <td><a  href="insertTestResult.jsp?pid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-yellow" >ADD REPORT </button></a></td>
-         
+          <td><%=rs.getString(6) %></td>
+          <td><%=rs.getString(7) %></td>     
+          <td>
+          <a  href="insertTestResult.jsp?pid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-yellow" >ADD  </button></a>
+          <% if(rs1.getString(1) != null)
+          {
+          %>
+          <a  href="printTestResult.jsp?rid=<%=rs1.getString(1)%>" target="_parent" value="<%=rs1.getString(1)%>" ><Button class="w3-button w3-green" >VIEW LAST</button></a>
+          
+          <% } %>
+           </td>
+          
         </tr>
       <% }}
       catch(Exception e){
@@ -148,7 +161,7 @@ function searchTable(p) {
       try{
     	  Connection con=ConnectionProvider.getCon();
     		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("select DISTINCT rp.rpid,rp.rdate,pt.name,pt.refdoc,rp.amount,rp.comments from report rp join result rs on rp.rpid = rs.rpid join patient pt on rp.prid=pt.pid order by 1 desc");
+    		ResultSet rs=st.executeQuery("select DISTINCT rp.rpid,rp.rdate,pt.name,pt.refdoc,rp.amount,rp.comments from report rp join result rs on rp.rpid = rs.rpid join patient pt on rp.prid=pt.pid where rp.deleted =false order by 1 desc");
     		while(rs.next())
     		{
       
@@ -162,12 +175,16 @@ function searchTable(p) {
           <td><%=rs.getString(4) %></td>
           <td>Rs.<%=rs.getString(5) %></td>
           <td><%=rs.getString(6) %></td>
-          <td><a  href="editTestResult.jsp?rid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-blue" >EDIT </button></a> <a  href="printTestResult.jsp?rid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-green" >PREVIEW </button></a></td>
+          <td><a  href="editTestResult.jsp?rid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-blue" >EDIT </button></a> 
+          <a  href="printTestResult.jsp?rid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-green" >PREVIEW </button></a>
+          </td>
   
           
         </tr>
         
-        <% }}
+        <% }
+    	con.close();	
+      }
       catch(Exception e){
     	  
       }

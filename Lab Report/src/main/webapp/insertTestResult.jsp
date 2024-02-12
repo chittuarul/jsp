@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 <html>
-<title>Test Result</title>
+<title>New Result</title>
 
 <!------ Include the above in your HEAD tag ---------->
  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -15,45 +15,7 @@
 
 <script>
 
-
-function searchTable(p) {
-    var input, tab,filter, found, tg,tg1,tg3 i, j;
-    console.log(p);
-   		input = document.getElementById("searchInput"+p);    
-  		tab = document.getElementById("searchInputtab");
-  		console.log(input);
-  		console.log(tab);
-	filter = input.value.toUpperCase(); 
-	console.log(filter);
-	tg = tab.getElementsById('0');
-	tg1 = tab.getElementsById('0').getElementsByTagName('section').getElementsById(1).getElementsByTagName('h5');
-	tg2 = tab.getElementsById('0').getElementsByTagName('section').getElementsById(1)..getElementsById(2)getElementsByTagName('h5');
-	if(p=='0'){
-		for (i = 0; i < tg.length; i++) {
-	          if (tg[i].getElementsByTagName('h4').innerHTML.toUpperCase().indexOf(filter) > -1) {
-	                found = true;
-	              //  trid = tr.id;
-	            }
-	        }
-	        if (found) {
-	            tg[i].style.display="block";
-	         //   document.getElementById("trid").setAttribute("hidden", "hidden");
-	            found = false;
-	        } else {
-	            tg[i].style.display="none";
-	        }
-	    }
-	}
-	if(p=='1'){
-	    tg1 = tab.getElementsByTagName(p).;
-	    
-		}
-	if(p=='2'){
-	    tg = tab.getElementsById(0).getElementsByTagName('section').getElementsById(0).getElementsByTagName('h5');
-		}
-   // trid="";
-    
-}
+  
 </script>
 <style>
 
@@ -81,7 +43,7 @@ display: inline-block;
   <div class="w3-bar w3-black">  
     <a href="index.html" class="w3-bar-item w3-button  w3-left" >Home</a> 
     <a href="viewReportsAll.jsp" class="w3-bar-item w3-button  w3-right" >Back</a> 
-    <button class="w3-bar-item w3-button  w3-right" onclick="history.go(-1)">Go Back</button>
+  <!--  <button class="w3-bar-item w3-button  w3-right" onclick="history.go(-1)">Go Back</button> -->
    
   </div>
 
@@ -90,6 +52,9 @@ display: inline-block;
 
 <% 
 String ppid=request.getParameter("pid");
+String dt=java.time.LocalDate.now().toString();
+java.util.Date date1 = new java.util.Date();
+String str="";
 try{
 	  
 	 
@@ -107,7 +72,7 @@ try{
 %>  
 
 <section>
-<form name="my-form" onsubmit="return validform()" action="insertNewResult.jsp" method="">
+<form name="my-form" onsubmit="return validform()" action="insertNewResult.jsp" method="post">
 
 
 <div class="tbl-header">
@@ -124,7 +89,7 @@ try{
  </table>
  </div> 
 
-<div class="tbl-content" style="height:48px">
+<div class="tbl-content" style="height:auto">
     <table  cellpadding="0" cellspacing="0" border="0" >    
    
   <tr >
@@ -132,10 +97,10 @@ try{
      <input type="hidden" name="pid" value="<%=rs.getString(1)%>"> </input>
     <td colspan="2"> <%=rs.getString(2) %>  </td>      
     <td colspan="2"><%=rs.getString(3) %> / <%=rs.getString(4) %> </td>   
-    <td colspan="2"> <%=rs.getString(5) %> </td> 
-    <td colspan="2"><input type="text" name="spec" value=""> </td>
-    <td colspan="2"><input type="date" name="rdt" value="" id = "rdt" placeholder="dd-mm-yyyy" min="2024-01-01" max="2030-12-31" > </td>
-    <td colspan="2"><input type="text" name="amt" value="0" > </td>
+    <td colspan="2"> <%=rs.getString(6) %> </td> 
+    <td colspan="2"><input type="text" name="spec" value="" required> </td>
+    <td colspan="2"><input type="date" name="rdt" value="" id = "rdt" placeholder="dd-mm-yyyy" min="2024-01-01" max="2030-12-31" required> </td>
+    <td colspan="2"><input type="text" name="amt" value="0" ></td>
  
       
   </tr>  
@@ -147,58 +112,16 @@ try{
 
 <br>
 
-<table>
-<script>
+<!--   <table hidden>
 
-
-function searchTable() {
-    var input, tab,filter, found, tg,tg1,tg3 i, j;
-    console.log(p);
-   		input = document.getElementById("searchInput"+p);    
-  		tab = document.getElementById("searchInputtab");
-  		console.log(input);
-  		console.log(tab);
-	filter = input.value.toUpperCase(); 
-	console.log(filter);
-	tg = tab.getElementsById('0');
-	tg1 = tab.getElementsById('0').getElementsByTagName('section').getElementsById(1).getElementsByTagName('h5');
-	tg2 = tab.getElementsById('0').getElementsByTagName('section').getElementsById(1)..getElementsById(2)getElementsByTagName('h5');
-	if(p=='0'){
-		for (i = 0; i < tg.length; i++) {
-	          if (tg[i].getElementsByTagName('h4').innerHTML.toUpperCase().indexOf(filter) > -1) {
-	                found = true;
-	              //  trid = tr.id;
-	            }
-	        }
-	        if (found) {
-	            tg[i].style.display="block";
-	         //   document.getElementById("trid").setAttribute("hidden", "hidden");
-	            found = false;
-	        } else {
-	            tg[i].style.display="none";
-	        }
-	    }
-	}
-	if(p=='1'){
-	    tg1 = tab.getElementsByTagName(p).;
-	    
-		}
-	if(p=='2'){
-	    tg = tab.getElementsById(0).getElementsByTagName('section').getElementsById(0).getElementsByTagName('h5');
-		}
-   // trid="";
-    
-}
-</script>
-<div>
 <label>Type :</label> <input id='searchInput0' onkeyup='searchTable()' type='text'> </input>
 <label>group : </label> <input id='searchInput1' onkeyup='searchTable(1)' type='text'>
 <label>Test :</label> <input id='searchInput2' onkeyup='searchTable(2)' type='text'>
  
 
-</div>
+
 <hr>
-</table>
+</table> -->
 <div id='searchInputtab'>
 
 <% 

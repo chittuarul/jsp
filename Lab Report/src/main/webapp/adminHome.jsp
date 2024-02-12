@@ -56,7 +56,7 @@ function searchTable(p) {
     <button class="w3-bar-item w3-button tablink" onclick="openCity(event,'Tokyo')">All Patients</button>
     <button class="w3-bar-item w3-button tablink" onclick="openCity(event,'Tokyo1')">All Patient Results</button>
     <button class="w3-bar-item w3-button tablink" onclick="openCity(event,'chennai1')">All Tests</button>
-     <a href="index.html" class="w3-bar-item w3-button tablink">Logout</a>
+     <a href="index.html" class="w3-bar-item w3-button tablink w3-right">Logout</a>
   </div>
 </div>  
   <div id="London" class="w3-container w3-border city">
@@ -85,7 +85,7 @@ function searchTable(p) {
         <div class="row justify-content-center">
             <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">Add New Patient</div>
+                        <div class="card-header">Add Patient</div>
                         <div class="card-body">
                             <form name="my-form" onsubmit="return validform()" action="addNewPatient.jsp" method="post">
                                 <div class="form-group row">
@@ -108,7 +108,12 @@ function searchTable(p) {
                                         <input type="text" class="form-control" name="gender" required>
                                     </div>
                                 </div>
-								                           
+								 <div class="form-group row">
+                                    <label for="phone" class="col-md-4 col-form-label text-md-right">phone</label>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" name="phone" >
+                                    </div>
+                                </div>                          
                                 <div class="form-group row">
                                     <label for="ref_doc" class="col-md-4 col-form-label text-md-right"> Referance Doctor</label>
                                     <div class="col-md-6">
@@ -173,7 +178,7 @@ function searchTable(p) {
                     <div class="card">
                         <div class="card-header">Insert Test</div>
                         <div class="card-body">
-                            <form name="my-form" onsubmit="return validform()" action="insertTest.jsp" method="">
+                            <form name="my-form" onsubmit="return validform()" action="insertTest.jsp" method="post">
                                 <div class="form-group row">
                                     <label for="full_name" class="col-md-4 col-form-label text-md-right">Type</label>
                                     <div class="col-md-6">
@@ -244,7 +249,8 @@ function searchTable(p) {
          <td>Patient Name</td>
           <td>Age</td>
           <td>Gender</td>
-          <td>Referance Doctor</td>       
+          <td>Phone</td> 
+          <td>Referance Doctor</td>               
           <td>Comment</td>
           <td>Report</td>
         </tr>
@@ -253,15 +259,13 @@ function searchTable(p) {
   </div>
   <div class="tbl-content">
     <table id='searchTable0' cellpadding="0" cellspacing="0" border="0" >
-     
-      
-      <%@page import="java.sql.*" %>
-      <%@page import="project.ConnectionProvider" %>
+    
+ 
       <%
       try{
     	  Connection con=ConnectionProvider.getCon();
     		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("select * from patient order by 1 desc");
+    		ResultSet rs=st.executeQuery("select * from patient where pdelete = false order by 1 desc");
     		while(rs.next())
     		{
       
@@ -269,11 +273,14 @@ function searchTable(p) {
         <tr id=<%=rs.getString(1)%>>
           <td><%=rs.getString(1).toUpperCase() %></td>
           <td><%=rs.getString(2).toUpperCase() %></td>
-          <td><%=rs.getString(3).toUpperCase() %></td>
-          <td><%=rs.getString(4) %></td>
-          <td><%=rs.getString(5) %></td>
+          <td><%=rs.getString(3).toUpperCase() %></td>          
+          <td><%=rs.getString(4) %></td>          
+          <td><%=rs.getString(5).toUpperCase()  %></td>
           <td><%=rs.getString(6) %></td>
-          <td><a  href="insertTestResult.jsp?pid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-yellow" >ADD REPORT </button></a></td>
+          <td><%=rs.getString(7) %></td>          
+          <td><a  href="insertTestResult.jsp?pid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-yellow" >ADD REPORT </button></a>
+          <a  href="deletePatient.jsp?pid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-red" >DELETE </button></a>
+          </td>
           
         </tr>
 
@@ -314,16 +321,14 @@ function searchTable(p) {
     </table>
   </div>
   <div class="tbl-content">
-    <table id='searchTable1' cellpadding="0" cellspacing="0" border="0" style="height:60%">
+    <table id='searchTable1' cellpadding="0" cellspacing="0" border="0" >
        <%
       try{
     	  Connection con=ConnectionProvider.getCon();
     		Statement st=con.createStatement();
-    		ResultSet rs=st.executeQuery("select DISTINCT rp.rpid,rp.rdate,pt.name,pt.refdoc,rp.amount,rp.comments from report rp join result rs on rp.rpid = rs.rpid join patient pt on rp.prid=pt.pid order by 1 desc");
+    		ResultSet rs=st.executeQuery("select DISTINCT rp.rpid,rp.rdate,pt.name,pt.refdoc,rp.amount,rp.comments from report rp join result rs on rp.rpid = rs.rpid join patient pt on rp.prid=pt.pid where rp.deleted =false order by 1 desc");
     		while(rs.next())
     		{
-      
-      
       %>        
       
          <tr id=<%=rs.getString(1) %>>        
@@ -333,7 +338,10 @@ function searchTable(p) {
           <td><%=rs.getString(4) %></td>
           <td>Rs.<%=rs.getString(5) %></td>
           <td> <%=rs.getString(6) %></td>
-          <td><a  href="editTestResult.jsp?rid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-blue" >EDIT </button></a> <a  href="printTestResult.jsp?rid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-green" >PREVIEW </button></a></td>
+          <td><a  href="editTestResult.jsp?rid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-blue" >EDIT </button></a> 
+          <a  href="printTestResult.jsp?rid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-green" >PREVIEW </button></a>
+          <a  href="deleteReport.jsp?rid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-red" >DELETE </button></a>
+          </td>
         
           
         </tr>        
@@ -348,8 +356,8 @@ function searchTable(p) {
     </table>
   </div>
 </section>
-
 </div>
+
  <div id="chennai1" class="w3-container w3-border city" style="display:none">
 <section>
   <!--for demo wrap-->
@@ -392,7 +400,7 @@ function searchTable(p) {
           <td><%=rs.getString(5)%></td>
           <td><%=rs.getString(6)%></td>
           <td><%=rs.getString(7)%></td>
-          <td><a  href="deleteTest.jsp?tid=<%=rs.getString(1)%>" target="_blank" value="<%=rs.getString(1)%>"><Button class="w3-button w3-red" >DELETE </button></a></td>
+          <td><a  href="deleteTest.jsp?tid=<%=rs.getString(1)%>" target="_parent" value="<%=rs.getString(1)%>"><Button class="w3-button w3-red" >DELETE </button></a></td>
        
         </tr>
         
