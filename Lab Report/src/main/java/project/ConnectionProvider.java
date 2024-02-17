@@ -12,7 +12,7 @@ public static Connection getCon() {
 			
 			
 			Class.forName("com.mysql.jdbc.Driver"); 
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lab","chittuadmin","Thunderhead1@");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/xxxxx","xxxx","xxxx");
 			
 			return con;
 			
